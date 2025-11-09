@@ -1,19 +1,22 @@
 const express = require("express");
 const cors = require("cors");
-const fetch = require("node-fetch"); // ✅ Works with CommonJS
+
+// ✅ Fix for node-fetch (works with CommonJS)
+const fetch = (...args) =>
+  import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🧠 Load Gemini API Key securely (from Render Environment Variables)
+// 🧠 Load Gemini API key securely from Render env
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-// ✅ Root route (for easy status check)
+// ✅ Root route — just for quick check
 app.get("/", (req, res) => {
   res.send(`
     <h2>✅ Gemini Proxy is Live!</h2>
-    <p>Send a <b>POST</b> request to <code>/gemini</code> with your prompt.</p>
+    <p>Send a POST request to /gemini with your prompt.</p>
     <pre>{
   "contents": [
     { "parts": [ { "text": "Say hello Gemini" } ] }
@@ -22,7 +25,7 @@ app.get("/", (req, res) => {
   `);
 });
 
-// 🔹 Gemini proxy endpoint
+// ✅ Gemini Proxy endpoint
 app.post("/gemini", async (req, res) => {
   try {
     const response = await fetch(
