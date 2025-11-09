@@ -15,7 +15,8 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 // ✅ Choose your Gemini model ID here
 // You can list available models using the /models endpoint or documentation.
 // Example common models: "models/gemini-1.5-flash", "models/gemini-1.5-pro"
-const MODEL_ID = "models/gemini-1.5-flash"; 
+const MODEL_ID = "models/gemini-1.5-flash"; // ✅ Free Tier
+const API_VERSION = "v1beta"; 
 
 // ✅ Root route — simple status check
 app.get("/", (req, res) => {
